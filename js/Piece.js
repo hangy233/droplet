@@ -16,4 +16,8 @@ export default class Piece {
 	getSpritName() {
 		return this.type;
 	}
+
+	getType() {
+		return this.type;
+	}
 }

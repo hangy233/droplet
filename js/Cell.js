@@ -1,7 +1,7 @@
 import Piece from "./Piece.js";
 
 export default class Cell {
-	Cell(row, col, element) {
+	constructor(row, col, element) {
 		this.row = row;
 		this.col = col;
 		this.element = element;
