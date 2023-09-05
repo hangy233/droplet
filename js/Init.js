@@ -1,7 +1,7 @@
 export default class Init {
 	static init() {
 		this.containter = document.getElementById('main-container');
-		initBoard();
+		Init.initBoard();
 	}
 
 	static initBoard(row = 20, column = 20) {
