@@ -24,9 +24,9 @@ export default class Game {
 				cell.setAttribute('class', `cell`);
 				this.cells.set(hash, new Cell(i, j, cell));
 				this.container.append(cell);
-				this.container.addEventListener('click', (e) => this.handleClick(e));
 			}
 		}
+		this.container.addEventListener('click', (e) => this.handleClick(e));
 	}
 
 	handleClick(event) {
