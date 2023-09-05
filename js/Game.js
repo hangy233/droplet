@@ -43,9 +43,10 @@ export default class Game {
 	}
 
 	updatePiece(cell) {
-		const currentType = cell.getPiece.getType();
-		if (currentType === Piece.Type.DROPLET && !cell.getPiece.getIsMain()) {
-			cell.getPiece.setIsMain(true);
+		const piece = cell.getPiece();
+		const currentType = piece?.getType() ?? null;
+		if (currentType === Piece.Type.DROPLET && !piece.getIsMain()) {
+			piece.setIsMain(true);
 			cell.updateSprit();
 		}
 		const index = Piece.Type.values().indexOf(currentType);
