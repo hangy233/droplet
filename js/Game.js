@@ -1,5 +1,6 @@
 import Cell from './Cell.js';
 import Piece from './Piece.js';
+import PieceFactory from './PieceFactory.js';
 
 export default class Game {
 	static Mode = {EDIT: 'EDIT', PLAY: 'PLAY'};
@@ -51,6 +52,6 @@ export default class Game {
 
 		const nextType = Piece.Type[Piece.Type.keys()[index + 1]] ?? null;
 
-		cell.updatePiece(Piece.createPiece(nextType));
+		cell.updatePiece(PieceFactory.createPiece(nextType));
 	}
 }
