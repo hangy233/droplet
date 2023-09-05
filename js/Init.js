@@ -1,10 +1,10 @@
 export default class Init {
-	static init() {
+	init() {
 		this.containter = document.getElementById('main-container');
-		Init.initBoard();
+		this.initBoard();
 	}
 
-	static initBoard(row = 20, column = 20) {
+	initBoard(row = 20, column = 20) {
 		for (let i = 0; i < row; i++) {
 			for (let j = 0; j < column; j++) {
 				const cell = document.createElement('div');
