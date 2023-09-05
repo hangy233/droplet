@@ -1,7 +1,7 @@
-import Init from "./Init.js"
+import Game from "./Game.js"
 
 document.addEventListener("DOMContentLoaded", (event) => {
   console.log("DOM fully loaded and parsed");
 
-  new Init().init();
+  new Game().init(800, 20, 20);
 });

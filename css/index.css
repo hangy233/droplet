@@ -1,3 +1,13 @@
 #main-container {
 	display: grid;
+    width: 800px;
+    height: 800px;
+    grid-template-columns: repeat(20, 1fr);
+    grid-column-gap: 0px;
+    grid-template-rows: repeat(20, 1fr);
 }
+
+.cell {
+	border: 1px solid black;
+}
+
