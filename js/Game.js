@@ -11,7 +11,7 @@ export default class Game {
 		this.boardRows = boardRows;
 		this.boardCols = boardCols;
 		this.cells = new Map();
-		this.mode = Init.Mode.EDIT;
+		this.mode = Game.Mode.EDIT;
 		this.initBoard();
 	}
 
