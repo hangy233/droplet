@@ -32,7 +32,7 @@ export default class Game {
 	handleClick(event) {
 		if (!event.target.classList.contains('cell')) return;
 		const hash = event.target.id;
-		const cell = cells.get(hash);
+		const cell = this.cells.get(hash);
 		switch (this.mode) {
 			case Game.Mode.EDIT:
 				this.updatePiece(cell);
