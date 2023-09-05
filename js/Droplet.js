@@ -15,7 +15,7 @@ export default class Droplet extends Piece {
 		super(type);
 		this.isMain = false;
 		this.form = Droplet.Form.WATER;
-		this.status = Droplet.status.NORMAL;
+		this.status = Droplet.Status.NORMAL;
 	}
 
 	setIsMain(isMain) {
