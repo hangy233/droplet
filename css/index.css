@@ -9,5 +9,6 @@
 
 .cell {
 	border: 1px solid black;
+	background-size: contain;
 }
 
