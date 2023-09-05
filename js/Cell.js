@@ -15,7 +15,7 @@ export default class Cell {
 
 	updateSprit() {
 		if (this.piece) {
-			this.element.style.backgroundImage = `url("../static/droplet/${this.piece.getSpritName()}.PNG")`;
+			this.element.style.backgroundImage = `url("../droplet/static/${this.piece.getSpritName()}.PNG")`;
 		} else {
 			this.element.style.backgroundImage = '';
 		}
