@@ -49,9 +49,9 @@ export default class Game {
 			piece.setIsMain(true);
 			cell.updateSprit();
 		}
-		const index = Piece.Type.values().indexOf(currentType);
+		const index = Object.values(Piece.Type).indexOf(currentType);
 
-		const nextType = Piece.Type[Piece.Type.keys()[index + 1]] ?? null;
+		const nextType = Piece.Type[Object.keys(Piece.Type)[index + 1]] ?? null;
 
 		cell.updatePiece(PieceFactory.createPiece(nextType));
 	}
