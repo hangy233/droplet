@@ -1,6 +1,6 @@
 export default class Init {
 	init() {
-		this.containter = document.getElementById('main-container');
+		this.container = document.getElementById('main-container');
 		this.initBoard();
 	}
 
