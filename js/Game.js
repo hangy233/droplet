@@ -8,10 +8,10 @@ export default class Game {
 	init(boardSize = 800, boardRows = 20, boardCols = 20) {
 		this.container = document.getElementById('main-container');
 		this.controlPanel = document.getElementById('control-panel');
-		this.editButton = controlPanel.getElementById('edit');
-		this.playButton = controlPanel.getElementById('play');
-		this.gameDesc =  controlPanel.getElementById('game-desc');
-		this.download =  controlPanel.getElementById('download');
+		this.editButton = this.controlPanel.getElementById('edit');
+		this.playButton = this.controlPanel.getElementById('play');
+		this.gameDesc =  this.controlPanel.getElementById('game-desc');
+		this.download =  this.controlPanel.getElementById('download');
 		this.boardSize = boardSize;
 		this.boardRows = boardRows;
 		this.boardCols = boardCols;
