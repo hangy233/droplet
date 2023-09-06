@@ -14,6 +14,7 @@ export default class Game {
 		this.download =  document.getElementById('download');
 		this.exportButton = document.getElementById('export');
 		this.importButton = document.getElementById('import');
+		this.fileElem = document.getElementById('fileElem');
 		this.boardSize = boardSize;
 		this.boardRows = boardRows;
 		this.boardCols = boardCols;
@@ -23,6 +24,19 @@ export default class Game {
 		this.editButton.addEventListener('click', () => this.changeMode(Game.Mode.EDIT));
 		this.playButton.addEventListener('click', () => this.changeMode(Game.Mode.PLAY));
 		this.exportButton.addEventListener('click', () => this.exportBoard());
+
+		this.importButton.addEventListener(
+		  "click",
+		  (e) => {
+		    if (this.fileElem) {
+		      this.fileElem.click();
+		    }
+		    e.preventDefault(); // prevent navigation to "#"
+		  },
+		  false,
+		);
+
+		this.fileElem.addEventListener("change", () => handleFiles(), false);
 	}
 
 	changeMode(mode) {
@@ -112,5 +126,16 @@ export default class Game {
 		this.download.setAttribute("href", dataStr);
 		this.download.setAttribute("download", "board.json");
 		this.download.click();
+	}
+
+	handleFiles() {
+		for (const file of this.fileElem.files) {
+		    console.log(file);
+		    const reader = new FileReader();
+		    reader.onload = (evt) => {
+			    console.log(evt.target.result);
+			};
+			reader.readAsBinaryString(file);
+		}
 	}
 }
