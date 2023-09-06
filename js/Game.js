@@ -5,7 +5,7 @@ import PieceFactory from './PieceFactory.js';
 export default class Game {
 	static Mode = {EDIT: 'EDIT', PLAY: 'PLAY'};
 
-	init(boardSize = 800, boardRows = 20, boardCols = 20) {
+	constructor(boardSize = 800, boardRows = 20, boardCols = 20) {
 		this.container = document.getElementById('main-container');
 		this.controlPanel = document.getElementById('control-panel');
 		this.editButton = document.getElementById('edit');
