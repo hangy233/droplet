@@ -48,6 +48,7 @@ export default class Game {
 		if (currentType === Piece.Type.DROPLET && !piece.getIsMain()) {
 			piece.setIsMain(true);
 			cell.updateSprit();
+			return;
 		}
 		const index = Object.values(Piece.Type).indexOf(currentType);
 
