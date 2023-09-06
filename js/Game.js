@@ -12,6 +12,8 @@ export default class Game {
 		this.playButton = document.getElementById('play');
 		this.gameDesc =  document.getElementById('game-desc');
 		this.download =  document.getElementById('download');
+		this.exportButton = document.getElementById('export');
+		this.importButton = document.getElementById('import');
 		this.boardSize = boardSize;
 		this.boardRows = boardRows;
 		this.boardCols = boardCols;
@@ -20,6 +22,7 @@ export default class Game {
 		this.initBoard();
 		this.editButton.addEventListener('click', () => this.changeMode(Game.Mode.EDIT));
 		this.playButton.addEventListener('click', () => this.changeMode(Game.Mode.PLAY));
+		this.exportButton.addEventListener('click', () => this.exportBoard());
 	}
 
 	changeMode(mode) {
