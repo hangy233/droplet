@@ -36,7 +36,7 @@ export default class Game {
 		  false,
 		);
 
-		this.fileElem.addEventListener("change", () => handleFiles(), false);
+		this.fileElem.addEventListener("change", () => this.handleFiles(), false);
 	}
 
 	changeMode(mode) {
