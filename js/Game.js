@@ -109,8 +109,8 @@ export default class Game {
 		}
 
 		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(boardObj));
-		dlAnchorElem.setAttribute("href", dataStr);
-		dlAnchorElem.setAttribute("download", "board.json");
-		dlAnchorElem.click();
+		this.download.setAttribute("href", dataStr);
+		this.download.setAttribute("download", "board.json");
+		this.download.click();
 	}
 }
