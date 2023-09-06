@@ -92,7 +92,7 @@ export default class Game {
 				const cell = this.cells.get(hash);
 				const piece = cell.getPiece();
 				const cellObj = {
-					pieceType: piece?.getType() ?? null;
+					pieceType: piece?.getType() ?? null,
 				};
 
 				if (piece?.getType() === Piece.Type.DROPLET) {
