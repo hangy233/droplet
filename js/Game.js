@@ -100,7 +100,7 @@ export default class Game {
 					}
 					cell.updatePiece(piece);
 				}
-				this.cells.set(hash, new Cell(i, j, cellElem));
+				this.cells.set(hash, cell);
 				this.container.append(cellElem);
 			}
 		}
