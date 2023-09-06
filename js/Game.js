@@ -86,7 +86,7 @@ export default class Game {
 				const cell = new Cell(i, j, cellElem);
 				const cellObj = cells[i * rows + j];
 				const piece = PieceFactory.createPiece(cellObj.pieceType);
-				if (piece.type === Piece.Type.DROPLET) {
+				if (piece.getType() === Piece.Type.DROPLET) {
 					if (cellObj.isMain) {
 						piece.setIsMain(true);
 					}
