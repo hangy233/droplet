@@ -71,9 +71,9 @@ export default class Game {
 	}
 
 	init(size, rows, cols, cells) {
-		this.boardSize = boardObj.size;
-		this.boardRows = boardObj.rows;
-		this.boardCols = boardObj.cols;
+		this.boardSize = size;
+		this.boardRows = rows;
+		this.boardCols = cols;
 		this.cells = new Map();
 		this.mode = Game.Mode.EDIT;
 		this.container.innerHTML = '';
@@ -84,7 +84,7 @@ export default class Game {
 				cellElem.setAttribute('id', hash);
 				cellElem.setAttribute('class', `cell`);
 				const cell = new Cell(i, j, cellElem);
-				const cellObj = boardObj.cells[i * boardObj.rows + j];
+				const cellObj = cells[i * rows + j];
 				const piece = PieceFactory.createPiece(cellObj.pieceType);
 				if (piece.type === Piece.Type.DROPLET) {
 					if (cellObj.isMain) {
