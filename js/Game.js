@@ -86,18 +86,20 @@ export default class Game {
 				const cell = new Cell(i, j, cellElem);
 				const cellObj = cells[i * rows + j];
 				const piece = PieceFactory.createPiece(cellObj.pieceType);
-				if (piece.getType() === Piece.Type.DROPLET) {
-					if (cellObj.isMain) {
-						piece.setIsMain(true);
+				if (piece) {
+					if (piece.getType() === Piece.Type.DROPLET) {
+						if (cellObj.isMain) {
+							piece.setIsMain(true);
+						}
+						if (cellObj.form) {
+							piece.setForm(cellObj.form);
+						}
+						if (cellObj.status) {
+							piece.setStatus(cellObj.status);
+						}
 					}
-					if (cellObj.form) {
-						piece.setForm(cellObj.form);
-					}
-					if (cellObj.status) {
-						piece.setStatus(cellObj.status);
-					}
+					cell.updatePiece(piece);
 				}
-				cell.updatePiece(piece);
 				this.cells.set(hash, new Cell(i, j, cellElem));
 				this.container.append(cellElem);
 			}
