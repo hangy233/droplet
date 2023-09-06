@@ -20,7 +20,7 @@ export default class Game {
 		this.boardCols = boardCols;
 		this.cells = new Map();
 		this.mode = Game.Mode.EDIT;
-		this.initBoard();
+		this.initEmptyBoard();
 		this.editButton.addEventListener('click', () => this.changeMode(Game.Mode.EDIT));
 		this.playButton.addEventListener('click', () => this.changeMode(Game.Mode.PLAY));
 		this.exportButton.addEventListener('click', () => this.exportBoard());
@@ -37,6 +37,7 @@ export default class Game {
 		);
 
 		this.fileElem.addEventListener("change", () => this.handleFiles(), false);
+		this.container.addEventListener('click', (e) => this.handleClickBoard(e));
 	}
 
 	changeMode(mode) {
@@ -58,7 +59,52 @@ export default class Game {
 		}
 	}
 
-	initBoard() {
+	initFromJson(boardStr) {
+		let boardObj;
+		try {
+			boardObj = JSON.parse(boardStr);
+		} catch (e) {
+			alert("import failed");
+		}
+
+		this.init(boardObj.size, boardObj.rows, boardObj.cols, boardObj.cells);
+	}
+
+	init(size, rows, cols, cells) {
+		this.boardSize = boardObj.size;
+		this.boardRows = boardObj.rows;
+		this.boardCols = boardObj.cols;
+		this.cells = new Map();
+		this.mode = Game.Mode.EDIT;
+		this.container.innerHTML = '';
+		for (let i = 0; i < this.boardRows; i++) {
+			for (let j = 0; j < this.boardCols; j++) {
+				const hash = `${i}-${j}`;
+				const cellElem = document.createElement('div');
+				cellElem.setAttribute('id', hash);
+				cellElem.setAttribute('class', `cell`);
+				const cell = new Cell(i, j, cellElem);
+				const cellObj = boardObj.cells[i * boardObj.rows + j];
+				const piece = PieceFactory.createPiece(cellObj.pieceType);
+				if (piece.type === Piece.Type.DROPLET) {
+					if (cellObj.isMain) {
+						piece.setIsMain(true);
+					}
+					if (cellObj.form) {
+						piece.setForm(cellObj.form);
+					}
+					if (cellObj.status) {
+						piece.setStatus(cellObj.status);
+					}
+				}
+				cell.updatePiece(piece);
+				this.cells.set(hash, new Cell(i, j, cellElem));
+				this.container.append(cellElem);
+			}
+		}
+	}
+
+	initEmptyBoard() {
 		for (let i = 0; i < this.boardRows; i++) {
 			for (let j = 0; j < this.boardCols; j++) {
 				const hash = `${i}-${j}`;
@@ -69,7 +115,6 @@ export default class Game {
 				this.container.append(cell);
 			}
 		}
-		this.container.addEventListener('click', (e) => this.handleClickBoard(e));
 	}
 
 	handleClickBoard(event) {
@@ -130,11 +175,8 @@ export default class Game {
 
 	handleFiles() {
 		for (const file of this.fileElem.files) {
-		    console.log(file);
 		    const reader = new FileReader();
-		    reader.onload = (evt) => {
-			    console.log(evt.target.result);
-			};
+		    reader.onload = (evt) => this.initFromJson(evt.target.result);
 			reader.readAsBinaryString(file);
 		}
 	}
