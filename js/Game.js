@@ -250,7 +250,7 @@ export default class Game {
 	findMainDropletCells() {
 		const res = [];
 		for (var [key, cell] of this.cells) {
-			if (cell.getPiece()?.getType() === Piece.Type.DROPLET && cell.getPiece().isMain()) {
+			if (cell.getPiece()?.getType() === Piece.Type.DROPLET && cell.getPiece().getIsMain()) {
 				res.push(cell);
 			}
 		}
