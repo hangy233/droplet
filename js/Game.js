@@ -20,6 +20,7 @@ export default class Game {
 		this.boardCols = boardCols;
 		this.cells = new Map();
 		this.mode = Game.Mode.EDIT;
+		this.keyDown = false;
 		this.initEmptyBoard();
 		this.editButton.addEventListener('click', () => this.changeMode(Game.Mode.EDIT));
 		this.playButton.addEventListener('click', () => this.changeMode(Game.Mode.PLAY));
@@ -38,6 +39,8 @@ export default class Game {
 
 		this.fileElem.addEventListener("change", () => this.handleFiles(), false);
 		this.container.addEventListener('click', (e) => this.handleClickBoard(e));
+		window.addEventListener('keydown', (e) => this.handleKeyDown(e));
+		window.addEventListener('keyup', (e) => this.handleKeyUp(e));
 	}
 
 	changeMode(mode) {
@@ -47,11 +50,15 @@ export default class Game {
 			case Game.Mode.EDIT:
 				this.editButton.setAttribute('disabled', '');
 				this.playButton.removeAttribute('disabled');
+				this.importButton.removeAttribute('disabled');
+				this.exportButton.removeAttribute('disabled');
 				this.gameDesc.textContent = "Editing."
 				return;
 			case Game.Mode.PLAY:
 				this.playButton.setAttribute('disabled', '');
 				this.editButton.removeAttribute('disabled');
+				this.importButton.setAttribute('disabled', '');
+				this.exportButton.setAttribute('disabled', '');
 				this.gameDesc.textContent = "Game start."
 				return;
 			default:
@@ -181,5 +188,72 @@ export default class Game {
 		    reader.onload = (evt) => this.initFromJson(evt.target.result);
 			reader.readAsBinaryString(file);
 		}
+	}
+
+	handleKeyDown(event) {
+		if (this.mode !== Game.Mode.PLAY) return;
+		if (this.keyDown) return;
+		this.keyDown = true;
+
+		let vector = [0, 0];
+		switch (event.key) {
+			case 'ArrowUp':
+				vector = [-1, 0];
+				break;
+			case 'ArrowDown':
+				vector = [1, 0];
+				break;
+			case 'ArrowLeft':
+				vector = [0, -1];
+				break;
+			case 'ArrowRight':
+				vector = [0, 1];
+				break;
+			default:
+				break;
+		}
+
+		const cellsToMove = new Set();
+		const mainDropletCells = this.findMainDropletCells();
+		for (const cell of mainDropletCells) {
+			this.findMovingDropletCells(cell, cellsToMove);
+		}
+		for (const cellToMove of cellsToMove) {
+			this.tryMove(cellToMove, vector);
+		}
+	}
+
+	tryMove(cell, vector) {
+
+	}
+
+	handleKeyUp() {
+		this.keyDown = false;
+	}
+
+	findMovingDropletCells(startCell, res = new Set()) {
+		if (startCell?.getPiece()?.getType() !== Piece.Type.DROPLET) return;
+		if (res.has(startCell)) return;
+
+		res.add(startCell);
+
+		const fourDirections = [[-1,0],[1,0],[0,-1],[0,1]];
+
+		for (const [row, col] of fourDirections) {
+			const hash = `${row + startCell.getPosition()[0]}-${col + startCell.getPosition()[1]}`;
+			const checkingCell = this.cells.get(hash);
+
+			this.findMovingDropletCells(checkingCell, res);
+		}
+	}
+
+	findMainDropletCells() {
+		const res = [];
+		for (var [key, cell] of this.cells) {
+			if (cell.getPiece()?.getType() === Piece.Type.DROPLET && cell.getPiece().isMain()) {
+				res.push(cell);
+			}
+		}
+		return res;
 	}
 }

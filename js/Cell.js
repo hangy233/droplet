@@ -24,4 +24,8 @@ export default class Cell {
 	getPiece() {
 		return this.piece;
 	}
+
+	getPosition() {
+		return [this.row, this.col];
+	}
 }
