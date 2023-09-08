@@ -302,7 +302,7 @@ export default class Game {
 	findMainDropletCells() {
 		const res = [];
 		for (var [key, cell] of this.cells) {
-			if (cell.getDropletPiece().getIsMain()) {
+			if (cell.getDropletPiece()?.getIsMain()) {
 				res.push(cell);
 			}
 		}
