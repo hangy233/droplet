@@ -1,4 +1,5 @@
 import Piece from "./Piece.js";
+import Droplet from "./Droplet.js";
 
 export default class Cell {
 	constructor(row, col, element) {
