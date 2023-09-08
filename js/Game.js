@@ -263,7 +263,7 @@ export default class Game {
 	}
 
 	maybeMove(cellToMove, pieces, vector) {
-		const targetCell = findRelativeCell(cellToMove, vector);
+		const targetCell = this.findRelativeCell(cellToMove, vector);
 		if (!targetCell) return;
 		if (targetCell.getPieces().length === 0) {
 			cellsToMove.removePieces(pieces);
