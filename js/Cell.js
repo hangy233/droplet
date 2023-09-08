@@ -27,7 +27,7 @@ export default class Cell {
 	}
 
 	removePieces(pieces) {
-		this.pieces = this.pieces.filter((p) => pieces.indexOf(p) !== -1);
+		this.pieces = this.pieces.filter((p) => pieces.indexOf(p) === -1);
 		this.updateSprit();
 	}
 
