@@ -18,6 +18,14 @@ export default class Droplet extends Piece {
 		this.status = Droplet.Status.NORMAL;
 	}
 
+	isTouchable() {
+		return false;
+	}
+
+	isPushable() {
+		return true;
+	}
+
 	setIsMain(isMain) {
 		this.isMain = isMain;
 	}

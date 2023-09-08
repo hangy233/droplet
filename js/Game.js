@@ -92,21 +92,24 @@ export default class Game {
 				cellElem.setAttribute('class', `cell`);
 				const cell = new Cell(i, j, cellElem);
 				const cellObj = cells[i * rows + j];
-				const piece = PieceFactory.createPiece(cellObj.pieceType);
-				if (piece) {
-					if (piece.getType() === Piece.Type.DROPLET) {
-						if (cellObj.isMain) {
-							piece.setIsMain(true);
+				for (const p of cellObj.pieces) {
+					const pieceFromObj = PieceFactory.createPiece(p.pieceType);
+					if (pieceFromObj) {
+						if (pieceFromObj.getType() === Piece.Type.DROPLET) {
+							if (p.isMain) {
+								pieceFromObj.setIsMain(true);
+							}
+							if (p.form) {
+								pieceFromObj.setForm(p.form);
+							}
+							if (p.status) {
+								pieceFromObj.setStatus(p.status);
+							}
 						}
-						if (cellObj.form) {
-							piece.setForm(cellObj.form);
-						}
-						if (cellObj.status) {
-							piece.setStatus(cellObj.status);
-						}
+						cell.addPiece(pieceFromObj);
 					}
-					cell.updatePiece(piece);
 				}
+
 				this.cells.set(hash, cell);
 				this.container.append(cellElem);
 			}
@@ -140,7 +143,7 @@ export default class Game {
 	}
 
 	editPiece(cell) {
-		const piece = cell.getPiece();
+		const piece = cell.getPieces()[0];
 		const currentType = piece?.getType() ?? null;
 		if (currentType === Piece.Type.DROPLET && !piece.getIsMain()) {
 			piece.setIsMain(true);
@@ -151,7 +154,8 @@ export default class Game {
 
 		const nextType = Piece.Type[Object.keys(Piece.Type)[index + 1]] ?? null;
 
-		cell.updatePiece(PieceFactory.createPiece(nextType));
+		cell.clearPieces();
+		cell.addPiece(PieceFactory.createPiece(nextType));
 	}
 
 	exportBoard() {
@@ -161,16 +165,18 @@ export default class Game {
 			for (let j = 0; j < this.boardCols; j++) {
 				const hash = `${i}-${j}`;
 				const cell = this.cells.get(hash);
-				const piece = cell.getPiece();
-				const cellObj = {
-					pieceType: piece?.getType() ?? null,
-				};
-
-				if (piece?.getType() === Piece.Type.DROPLET) {
-					cellObj.isMain = piece.getIsMain();
-					cellObj.form = piece.getForm();
-					cellObj.status = piece.getStatus();
-				}
+				const pieces = cell.getPieces().map((p) => {
+					const obj = {
+						pieceType: p.getType() ?? null,
+					}
+					if (p.getType() === Piece.Type.DROPLET) {
+						obj.isMain = p.getIsMain();
+						obj.form = p.getForm();
+						obj.status = p.getStatus();
+					}
+					return obj;
+				});
+				const cellObj = {pieces};
 
 				boardObj.cells.push(cellObj);
 			}
@@ -218,21 +224,67 @@ export default class Game {
 		for (const cell of mainDropletCells) {
 			this.findMovingDropletCells(cell, cellsToMove);
 		}
-		for (const cellToMove of cellsToMove) {
-			this.tryMove(cellToMove, vector);
-		}
-	}
-
-	tryMove(cell, vector) {
-
+		this.tryMove(cellsToMove, vector);
 	}
 
 	handleKeyUp() {
 		this.keyDown = false;
 	}
 
+	tryMove(cells, vector) {
+		const sorted = [...cells].sort((a, b) => vector[0] * (b.row - a.row) + vector[1] * (b.col - a.col));
+		for (const cell of cells) {
+			if (!cell.getPiece()) continue;
+			this.maybePush(cell, vector);
+			this.maybeMove(cell, cell.getMovingPieces(), vector);
+		}
+	}
+
+	findRelativeCell(startCell, vector) {
+		const [cr, cc] = startCell.getPosition();
+		const [tr, tc] = [cr + vector[0], cc + vector[1]];
+		return this.cells.get(`${tr}-${tc}`);
+	}
+
+	maybePush(cellToPush, vector) {
+		const cellToBePushed = findRelativeCell(cellToPush, vector);
+		const targetCell = findRelativeCell(cellToBePushed, vector);
+
+		const piecesToPush = cellToPush.getMovingPieces();
+		const piecesToBePushed = new Set();
+
+		for (const pieceToPush of piecesToPush) {
+			for (const pieceToBePushed of cellToBePushed.getPushablePieces(pieceToPush)) {
+				piecesToBePushed.add(pieceToBePushed);
+			}
+		}
+
+		this.maybeMove(cellToBePushed, [...piecesToBePushed], vector);
+	}
+
+	maybeMove(cellToMove, pieces, vector) {
+		const targetCell = findRelativeCell(cellToMove, vector);
+		if (!targetCell) return;
+		if (targetCell.getPieces().length === 0) {
+			cellsToMove.removePieces(pieces);
+			targetCell.addPieces(pieces);
+			return;
+		}
+
+		// Move any pieces that can be moved. May not work for ice+net case if anything is touchable by one but not the other.
+		const piecesToBeMoved = [];
+		for (const p of pieces) {
+			if (targetCell.isTouchable(p)) {
+				piecesToBeMoved.push(p);
+			}
+		}
+
+		cellsToMove.removePieces(piecesToBeMoved);
+		targetCell.addPieces(piecesToBeMoved);
+	}
+
 	findMovingDropletCells(startCell, res = new Set()) {
-		if (startCell?.getPiece()?.getType() !== Piece.Type.DROPLET) return;
+		if (!startCell || !startCell.getDropletPiece()) return;
 		if (res.has(startCell)) return;
 
 		res.add(startCell);
@@ -250,7 +302,7 @@ export default class Game {
 	findMainDropletCells() {
 		const res = [];
 		for (var [key, cell] of this.cells) {
-			if (cell.getPiece()?.getType() === Piece.Type.DROPLET && cell.getPiece().getIsMain()) {
+			if (cell.getDropletPiece().getIsMain()) {
 				res.push(cell);
 			}
 		}

@@ -20,4 +20,12 @@ export default class Piece {
 	getType() {
 		return this.type;
 	}
+
+	isTouchable() {
+		return false;
+	}
+
+	isPushable() {
+		return false;
+	}
 }

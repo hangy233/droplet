@@ -5,24 +5,81 @@ export default class Cell {
 		this.row = row;
 		this.col = col;
 		this.element = element;
-		this.piece = null;
+		this.pieces = [];
 	}
 
-	updatePiece(piece) {
-		this.piece = piece;
+	clearPieces() {
+		this.pieces = [];
+		this.updateSprit();	
+	}
+
+	setPieces(pieces) {
+		this.pieces = pieces;
+		this.updateSprit();	
+	}
+
+	addPieces(pieces) {
+		for (const p of pieces) {
+			this.pieces.push(p);
+		}
 		this.updateSprit();
 	}
 
+	removePieces(pieces) {
+		this.pieces = this.pieces.filter((p) => pieces.indexOf(p) !== -1);
+		this.updateSprit();
+	}
+
+	addPiece(piece) {
+		this.addPieces([piece]);
+	}
+
+	removePiece(piece) {
+		this.removePieces([piece]);
+	}
+
+
 	updateSprit() {
-		if (this.piece) {
-			this.element.style.backgroundImage = `url("../droplet/static/${this.piece.getSpritName()}.PNG")`;
+		if (this.pieces[0]) {
+			this.element.style.backgroundImage = `url("../droplet/static/${this.pieces[0].getSpritName()}.PNG")`;
 		} else {
 			this.element.style.backgroundImage = '';
 		}
 	}
 
-	getPiece() {
-		return this.piece;
+	getPieces() {
+		return this.pieces;
+	}
+
+	hasPiece(piece) {
+		return this.pieces.some((p) => p === piece);
+	}
+
+	isTouchable(piece) {
+		return this.pieces.every((p) => p.isTouchable(piece));
+	}
+
+	isPushable(piece) {
+		return this.pieces.every((p) => p.isTouchable(piece) || p.isPushable(piece));
+	}
+
+	getPushablePieces(piece) {
+		if (!this.isPushable(piece)) return [];
+		return this.pieces.filter((p) => p.isPushable(piece));
+	}
+
+	getDropletPiece() {
+		return this.pieces.find((p) => p.getType() === Piece.Type.DROPLET);
+	}
+
+	getMovingPieces() {
+		const droplet = this.getDropletPiece();
+		const otherPiece = this.pieces.find((p) => p !== droplet);
+		if (droplet.getForm() === Droplet.Form.ICE && otherPiece?.getType() === Piece.Type.NET) {
+			return this.pieces;
+		}
+
+		return [droplet];
 	}
 
 	getPosition() {
