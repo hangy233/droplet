@@ -234,7 +234,7 @@ export default class Game {
 	tryMove(cells, vector) {
 		const sorted = [...cells].sort((a, b) => vector[0] * (b.row - a.row) + vector[1] * (b.col - a.col));
 		for (const cell of cells) {
-			if (!cell.getPiece()) continue;
+			if (!cell.getPieces().length) continue;
 			this.maybePush(cell, vector);
 			this.maybeMove(cell, cell.getMovingPieces(), vector);
 		}
