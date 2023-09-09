@@ -14,7 +14,7 @@ export default class Cold extends Piece {
 	}
 
 	applyTouchEffect(piece) {
-		if (piece.getType() === Piece.Type.Droplet && piece.getForm() === Piece.Form.WATER) {
+		if (piece.getType() === Piece.Type.DROPLET && piece.getForm() === Piece.Form.WATER) {
 			piece.setForm(Piece.Form.ICE);
 		}
 		return false;

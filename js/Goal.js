@@ -15,6 +15,6 @@ export default class Goal extends Piece {
 	}
 
 	applyTouchEffect(piece) {
-		return piece.getType() === Piece.Type.Droplet;
+		return piece.getType() === Piece.Type.DROPLET;
 	}
 }
