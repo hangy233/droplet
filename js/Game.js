@@ -15,6 +15,10 @@ export default class Game {
 		this.exportButton = document.getElementById('export');
 		this.importButton = document.getElementById('import');
 		this.fileElem = document.getElementById('fileElem');
+		this.targetDropletsInput = document.getElementById('target');
+		this.gameEnd = false;
+		this.targetDroplets = this.targetDropletsInput.value;
+		this.returnedDroplets = 0;
 		this.boardSize = boardSize;
 		this.boardRows = boardRows;
 		this.boardCols = boardCols;
@@ -39,6 +43,7 @@ export default class Game {
 
 		this.fileElem.addEventListener("change", () => this.handleFiles(), false);
 		this.container.addEventListener('click', (e) => this.handleClickBoard(e));
+		this.targetDropletsInput.addEventListener('change', (e) => this.targetDroplets = this.targetDropletsInput.value);
 		window.addEventListener('keydown', (e) => this.handleKeyDown(e));
 		window.addEventListener('keyup', (e) => this.handleKeyUp(e));
 	}
@@ -52,6 +57,7 @@ export default class Game {
 				this.playButton.removeAttribute('disabled');
 				this.importButton.removeAttribute('disabled');
 				this.exportButton.removeAttribute('disabled');
+				this.targetDropletsInput.removeAttribute('disabled');
 				this.gameDesc.textContent = "Editing."
 				return;
 			case Game.Mode.PLAY:
@@ -59,6 +65,7 @@ export default class Game {
 				this.editButton.removeAttribute('disabled');
 				this.importButton.setAttribute('disabled', '');
 				this.exportButton.setAttribute('disabled', '');
+				this.targetDropletsInput.setAttribute('disabled', '');
 				this.gameDesc.textContent = "Game start."
 				return;
 			default:
@@ -77,12 +84,15 @@ export default class Game {
 		this.init(boardObj.size, boardObj.rows, boardObj.cols, boardObj.cells);
 	}
 
-	init(size, rows, cols, cells) {
+	init(size, rows, cols, cells, targetDroplets = 1) {
 		this.boardSize = size;
 		this.boardRows = rows;
 		this.boardCols = cols;
 		this.cells = new Map();
 		this.mode = Game.Mode.EDIT;
+		this.targetDroplets = targetDroplets;
+		this.gameEnd = false;
+		this.returnedDroplets = 0;
 		this.container.innerHTML = '';
 		for (let i = 0; i < this.boardRows; i++) {
 			for (let j = 0; j < this.boardCols; j++) {
@@ -159,7 +169,7 @@ export default class Game {
 	}
 
 	exportBoard() {
-		const boardObj = {rows: this.boardRows, cols: this.boardCols, size: this.boardSize, cells: []};
+		const boardObj = {rows: this.boardRows, cols: this.boardCols, size: this.boardSize, cells: [], targetDroplets: this.targetDroplets};
 
 		for (let i = 0; i < this.boardRows; i++) {
 			for (let j = 0; j < this.boardCols; j++) {
@@ -199,6 +209,7 @@ export default class Game {
 	handleKeyDown(event) {
 		if (this.mode !== Game.Mode.PLAY) return;
 		if (this.keyDown) return;
+		if (this.gameEnd) return;
 		this.keyDown = true;
 
 		let vector = [0, 0];
@@ -281,6 +292,30 @@ export default class Game {
 
 		cellToMove.removePieces(piecesToBeMoved);
 		targetCell.addPieces(piecesToBeMoved);
+	}
+
+	handleTurnEnd() {
+		this.applyTouchEffect();
+		this.handleTurnEnd();
+		this.checkWin();
+	}
+
+	applyTouchEffect() {
+		for (const [, cell] of this.cells) {
+			this.returnedDroplets += cell.applyTouchEffect();
+		}
+	}
+
+	handleTurnEnd() {
+		// Spread form change.
+	}
+
+	checkWin() {
+		if (this.returnedDroplets >= this.targetDroplets) {
+			// Game.
+			this.gameEnd = true;
+			this.gameDesc.textContent = "You win."
+		}
 	}
 
 	findMovingDropletCells(startCell, res = new Set()) {

@@ -28,4 +28,9 @@ export default class Piece {
 	isPushable() {
 		return false;
 	}
+
+	// @returns {boolean} should remove toucher.
+	applyTouchEffect() {
+		return false;
+	}
 }

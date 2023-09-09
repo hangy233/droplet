@@ -13,4 +13,8 @@ export default class Goal extends Piece {
 	isPushable() {
 		return false;
 	}
+
+	applyTouchEffect(piece) {
+		return piece.getType() === Piece.Type.Droplet;
+	}
 }

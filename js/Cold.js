@@ -12,4 +12,11 @@ export default class Cold extends Piece {
 	isPushable() {
 		return false;
 	}
+
+	applyTouchEffect(piece) {
+		if (piece.getType() === Piece.Type.Droplet && piece.getForm() === Piece.Form.WATER) {
+			piece.setForm(Piece.Form.ICE);
+		}
+		return false;
+	}
 }

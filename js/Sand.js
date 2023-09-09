@@ -13,4 +13,11 @@ export default class Sand extends Piece {
 	isTouchable(piece) {
 		return piece.getType() === Piece.Type.DROPLET && piece.getForm() === Droplet.Form.ICE;
 	}
+
+	applyTouchEffect(piece) {
+		if (piece.getType() === Piece.Type.Droplet && piece.getForm() === Piece.Form.WATER) {
+			return true;
+		}
+		return false;
+	}
 }

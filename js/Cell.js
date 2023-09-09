@@ -86,4 +86,27 @@ export default class Cell {
 	getPosition() {
 		return [this.row, this.col];
 	}
+
+	// @return returned droplets.
+	applyTouchEffect() {
+		const piecesToBeRemoved = new Set();
+		let returnedDroplets = 0
+
+		for (const touchee of this.pieces) {
+			for (const toucher of this.pieces) {
+				if (toucher === touchee) continue;
+
+				if (touchee.applyTouchEffect(toucher)) {
+					piecesToBeRemoved.add(toucher);
+				}
+
+				if (touchee.getType() === Piece.Type.GOAL && toucher.getType() === Piece.Type.Droplet && toucher.getStatus() !== Droplet.Status.POLLUTED) {
+					returnedDroplets += 1;
+				}
+			}
+		}
+
+		this.removePieces([...piecesToBeRemoved]);
+		return returnedDroplets;
+	}
 }
