@@ -236,6 +236,7 @@ export default class Game {
 			this.findMovingDropletCells(cell, cellsToMove);
 		}
 		this.tryMove(cellsToMove, vector);
+		this.handleTurnEnd();
 	}
 
 	handleKeyUp() {
@@ -295,8 +296,9 @@ export default class Game {
 	}
 
 	handleTurnEnd() {
+		// step on conflict form changes does nothing.
 		this.applyTouchEffect();
-		this.handleTurnEnd();
+		this.spreadFormChange();
 		this.checkWin();
 	}
 
@@ -306,8 +308,7 @@ export default class Game {
 		}
 	}
 
-	handleTurnEnd() {
-		// Spread form change.
+	spreadFormChange() {
 	}
 
 	checkWin() {
