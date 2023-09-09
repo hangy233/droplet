@@ -100,7 +100,7 @@ export default class Cell {
 					piecesToBeRemoved.add(toucher);
 				}
 
-				if (touchee.getType() === Piece.Type.GOAL && toucher.getType() === Piece.Type.Droplet && toucher.getStatus() !== Droplet.Status.POLLUTED) {
+				if (touchee.getType() === Piece.Type.GOAL && toucher.getType() === Piece.Type.DROPLET && toucher.getStatus() !== Droplet.Status.POLLUTED) {
 					returnedDroplets += 1;
 				}
 			}
