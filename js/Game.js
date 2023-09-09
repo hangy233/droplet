@@ -248,6 +248,7 @@ export default class Game {
 
 	maybePush(cellToPush, vector) {
 		const cellToBePushed = this.findRelativeCell(cellToPush, vector);
+		if (!cellToBePushed) return;
 
 		const piecesToPush = cellToPush.getMovingPieces();
 		const piecesToBePushed = new Set();
