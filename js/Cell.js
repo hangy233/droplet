@@ -107,6 +107,8 @@ export default class Cell {
 		}
 
 		this.removePieces([...piecesToBeRemoved]);
+		this.updateSprit();
+
 		return returnedDroplets;
 	}
 }

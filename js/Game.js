@@ -315,7 +315,7 @@ export default class Game {
 		if (this.returnedDroplets >= this.targetDroplets) {
 			// Game.
 			this.gameEnd = true;
-			this.gameDesc.textContent = "You win."
+			this.gameDesc.textContent = "Stage clear."
 		}
 	}
 
