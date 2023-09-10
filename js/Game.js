@@ -318,10 +318,9 @@ export default class Game {
 		for (const pool of pools) {
 			const form = this.getNextFormOfPool(pool);
 			if (!form) continue;
-			for (cell of pool) {
+			for (const cell of pool) {
 				cell?.getDropletPiece()?.setForm(form);
 				cell?.getDropletPiece()?.setFormChangeInprogress(null);
-				cell?.updateSprit();
 			}
 		}
 	}
