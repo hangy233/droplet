@@ -332,7 +332,7 @@ export default class Game {
 
 		for (const cell of pool) {
 			if (cell?.getDropletPiece()?.getFormChangeInprogress()) {
-				if (nextForm) {
+				if (nextForm && nextForm !== cell?.getDropletPiece()?.getFormChangeInprogress()) {
 					return originalForm;
 				}
 				nextForm = cell?.getDropletPiece()?.getFormChangeInprogress();
