@@ -426,7 +426,7 @@ export default class Game {
 						return true;
 					}
 
-					const pushablePieces = targetCell.getPushablePieces(cell.getDropletPiece());
+					const piecesToBePushed = targetCell.getPushablePieces(cell.getDropletPiece());
 								
 					const canPush = piecesToBePushed.every((piece) => {
 						const target = this.findRelativeCell(cellToBePushed, vector);
