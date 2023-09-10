@@ -66,6 +66,8 @@ export default class Game {
 				this.importButton.setAttribute('disabled', '');
 				this.exportButton.setAttribute('disabled', '');
 				this.targetDropletsInput.setAttribute('disabled', '');
+				this.gameEnd = false;
+				this.returnedDroplets = 0;
 				this.gameDesc.textContent = "Game start."
 				return;
 			default:
@@ -299,6 +301,9 @@ export default class Game {
 		// step on conflict form changes does nothing.
 		this.applyTouchEffect();
 		this.spreadFormChange();
+		for (const [, cell] of this.cells) {
+			cell.updateSprit();
+		}
 		this.checkWin();
 	}
 
@@ -309,6 +314,32 @@ export default class Game {
 	}
 
 	spreadFormChange() {
+		const pools = this.findPools();
+		for (const pool of pools) {
+			const form = this.getNextFormOfPool(pool);
+			for (cell of pool) {
+				cell?.getDropletPiece()?.setForm(form);
+				cell?.getDropletPiece()?.setFormChangeInprogress(null);
+				cell?.updateSprit();
+			}
+		}
+	}
+
+	getNextFormOfPool(pool) {
+		const originalForm = pool[0]?.getDropletPiece()?.getFrom();
+		if (!originalForm) return;
+		let nextForm = null;
+
+		for (const cell of pool) {
+			if (cell?.getDropletPiece()?.getFormChangeInprogress()) {
+				if (nextForm) {
+					return originalForm;
+				}
+				nextForm = cell?.getDropletPiece()?.getFormChangeInprogress();
+			}
+		}
+
+		return nextForm;
 	}
 
 	checkWin() {
@@ -343,5 +374,20 @@ export default class Game {
 			}
 		}
 		return res;
+	}
+
+	findPools() {
+		return this.findMainDropletCells().map((mainDropletCell) => {
+			const pool = new Set();
+			this.findMovingDropletCells(mainDropletCell, pool);
+			return pool;
+		}).reduce((accumulator, currentValue) => {
+			for (const pool of accumulator) {
+				if (!currentValue.has([...pool][0])) {
+					accumulator.push([...currentValue]);
+				}
+				return accumulator;
+			}
+		}, []);
 	}
 }

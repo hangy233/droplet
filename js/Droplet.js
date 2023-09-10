@@ -16,6 +16,7 @@ export default class Droplet extends Piece {
 		this.isMain = false;
 		this.form = Droplet.Form.WATER;
 		this.status = Droplet.Status.NORMAL;
+		this.formChangeInprogress = null;
 	}
 
 	isTouchable() {
@@ -34,6 +35,10 @@ export default class Droplet extends Piece {
 		this.form = form;
 	}
 
+	setFormChangeInprogress(form) {
+		this.formChangeInprogress = form;
+	}
+
 	setStatus(status) {
 		this.status = status;
 	}
@@ -44,6 +49,10 @@ export default class Droplet extends Piece {
 
 	getForm() {
 		return this.form;
+	}
+
+	getFormChangeInprogress(form) {
+		return this.formChangeInprogress;
 	}
 
 	getStatus() {
