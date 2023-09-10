@@ -7,6 +7,7 @@ export default class Piece {
 		WALL: 'WALL',
 		WARM: 'WARM',
 		COLD: 'COLD',
+		POLLUTION: 'POLLUTION',
 	};
 
 	constructor(type) {

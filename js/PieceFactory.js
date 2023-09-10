@@ -6,6 +6,7 @@ import Wall from "./Wall.js";
 import Warm from "./Warm.js";
 import Cold from "./Cold.js";
 import Piece from "./Piece.js";
+import Pollution from "./Pollution.js"
 
 export default class PieceFactory {
 	static createPiece(type) {
@@ -24,6 +25,8 @@ export default class PieceFactory {
 				return new Warm(type);
 			case Piece.Type.COLD:
 				return new Cold(type);
+			case Piece.Type.POLLUTION:
+				return new Pollution(type);
 			default:
 				return null;
 		}
