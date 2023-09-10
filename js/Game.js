@@ -275,15 +275,7 @@ export default class Game {
 			}
 		}
 
-		const canPush = [...piecesToBePushed].every((piece) => {
-			const target = this.findRelativeCell(cellToBePushed, vector);
-			if (!targetCell) return false;
-			if (targetCell.getPieces().length === 0) return true;
-			if (targetCell.isTouchable(piece)) return true;
-			return false;
-		});
-
-		if (!canPush) return;
+		if (!this.canBePushedTo(cellToBePushed, [...piecesToBePushed], vector)) return;
 
 		this.maybeMove(cellToBePushed, [...piecesToBePushed], vector);
 	}
@@ -411,6 +403,13 @@ export default class Game {
 		});
 	}
 
+	canBePushedTo(cellToBePushed, piecesToBePushed, vector) {
+		const target = this.findRelativeCell(cellToBePushed, vector);
+		if (!target) return false;
+		if (target.getPieces().length === 0) return true;
+		return piecesToBePushed.every((piece) => target.isTouchable(piece));
+	}
+
 	findCellsToMove(vector) {
 		return this.findPools().filter((pool) => {
 			if (pool[0].getDropletPiece().getForm() === Droplet.Form.ICE) {
@@ -418,25 +417,11 @@ export default class Game {
 				return pioneers.every((cell) => {
 					const targetCell = this.findRelativeCell(cell, vector);
 					if (!targetCell) return false;
-					if (targetCell.getPieces().length === 0) {
-						return true;
-					}
-
-					if (targetCell.isTouchable(cell.getDropletPiece())) {
-						return true;
-					}
+					if (targetCell.getPieces().length === 0) return true;
+					if (targetCell.isTouchable(cell.getDropletPiece())) return true;
 
 					const piecesToBePushed = targetCell.getPushablePieces(cell.getDropletPiece());
-								
-					const canPush = piecesToBePushed.every((piece) => {
-						const target = this.findRelativeCell(cellToBePushed, vector);
-						if (!targetCell) return false;
-						if (targetCell.getPieces().length === 0) return true;
-						if (targetCell.isTouchable(piece)) return true;
-						return false;
-					});
-
-					return canPush;
+					return this.canBePushedTo(targetCell, piecesToBePushed, vector);
 				});
 			}
 			return true;
