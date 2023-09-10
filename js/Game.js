@@ -383,11 +383,12 @@ export default class Game {
 			return pool;
 		}).reduce((accumulator, currentValue) => {
 			for (const pool of accumulator) {
-				if (!currentValue.has([...pool][0])) {
-					accumulator.push([...currentValue]);
+				if (currentValue.has([...pool][0])) {
+					return accumulator;
 				}
-				return accumulator;
 			}
+			accumulator.push([...currentValue]);
+			return accumulator;
 		}, []);
 	}
 }
