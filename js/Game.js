@@ -1,6 +1,7 @@
 import Cell from './Cell.js';
 import Piece from './Piece.js';
 import PieceFactory from './PieceFactory.js';
+import Droplet from "./Droplet.js";
 
 export default class Game {
 	static Mode = {EDIT: 'EDIT', PLAY: 'PLAY'};
@@ -232,11 +233,12 @@ export default class Game {
 				break;
 		}
 
-		const cellsToMove = new Set();
-		const mainDropletCells = this.findMainDropletCells();
-		for (const cell of mainDropletCells) {
-			this.findMovingDropletCells(cell, cellsToMove);
-		}
+		// const cellsToMove = new Set();
+		// const mainDropletCells = this.findMainDropletCells();
+		// for (const cell of mainDropletCells) {
+		// 	this.findPool(cell, cellsToMove);
+		// }
+		const cellsToMove = this.findCellsToMove(vector);
 		this.tryMove(cellsToMove, vector);
 		this.handleTurnEnd();
 	}
@@ -350,7 +352,7 @@ export default class Game {
 		}
 	}
 
-	findMovingDropletCells(startCell, res = new Set()) {
+	findPool(startCell, res = new Set()) {
 		if (!startCell || !startCell.getDropletPiece()) return;
 		if (res.has(startCell)) return;
 
@@ -362,7 +364,7 @@ export default class Game {
 			const hash = `${row + startCell.getPosition()[0]}-${col + startCell.getPosition()[1]}`;
 			const checkingCell = this.cells.get(hash);
 
-			this.findMovingDropletCells(checkingCell, res);
+			this.findPool(checkingCell, res);
 		}
 	}
 
@@ -379,7 +381,7 @@ export default class Game {
 	findPools() {
 		return this.findMainDropletCells().map((mainDropletCell) => {
 			const pool = new Set();
-			this.findMovingDropletCells(mainDropletCell, pool);
+			this.findPool(mainDropletCell, pool);
 			return pool;
 		}).reduce((accumulator, currentValue) => {
 			for (const pool of accumulator) {
@@ -389,6 +391,40 @@ export default class Game {
 			}
 			accumulator.push([...currentValue]);
 			return accumulator;
+		}, []);
+	}
+
+	findPoolPioneers(pool, vector) {
+		return pool.filter((cell) => {
+			const targetCell = this.findRelativeCell(cell, vector);
+			return !targetCell.getDropletPiece()
+		});
+	}
+
+	findCellsToMove(vector) {
+		return this.findPools().filter((pool) => {
+			if (pool[0].getDropletPiece().getForm() === Droplet.Form.ICE) {
+				const pioneers = this.findPoolPioneers(pool, vector);
+				return pioneers.every((cell) => {
+					const targetCell = this.findRelativeCell(cell, vector);
+					if (!targetCell) return false;
+					if (targetCell.getPieces().length === 0) {
+						return true;
+					}
+
+					if (targetCell.isTouchable(cell.getDropletPiece())) {
+						return true;
+					}
+
+					return false;
+				});
+			}
+			return true;
+		}).reduce((res, pool) => {
+			for (const cell of pool) {
+				res.push(cell);
+			}
+			return res;
 		}, []);
 	}
 }
