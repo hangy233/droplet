@@ -1,4 +1,5 @@
 import Piece from "./Piece.js"
+import Droplet from "./Droplet.js"
 
 export default class Warm extends Piece {
 	constructor(type) {
@@ -14,7 +15,7 @@ export default class Warm extends Piece {
 	}
 
 	applyTouchEffect(piece) {
-		if (piece.getType() === Piece.Type.DROPLET && piece.getForm() === Piece.Form.ICE) {
+		if (piece.getType() === Piece.Type.DROPLET && piece.getForm() === Droplet.Form.ICE) {
 			piece.setForm(Piece.Form.WATER);
 		}
 		return false;
