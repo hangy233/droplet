@@ -275,6 +275,16 @@ export default class Game {
 			}
 		}
 
+		const canPush = [...piecesToBePushed].every((piece) => {
+			const target = this.findRelativeCell(cellToBePushed, vector);
+			if (!targetCell) return false;
+			if (targetCell.getPieces().length === 0) return true;
+			if (targetCell.isTouchable(piece)) return true;
+			return false;
+		});
+
+		if (!canPush) return;
+
 		this.maybeMove(cellToBePushed, [...piecesToBePushed], vector);
 	}
 
@@ -416,7 +426,17 @@ export default class Game {
 						return true;
 					}
 
-					return false;
+					const pushablePieces = targetCell.getPushablePieces(cell.getDropletPiece());
+								
+					const canPush = piecesToBePushed.every((piece) => {
+						const target = this.findRelativeCell(cellToBePushed, vector);
+						if (!targetCell) return false;
+						if (targetCell.getPieces().length === 0) return true;
+						if (targetCell.isTouchable(piece)) return true;
+						return false;
+					});
+
+					return canPush;
 				});
 			}
 			return true;
