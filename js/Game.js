@@ -317,6 +317,7 @@ export default class Game {
 		const pools = this.findPools();
 		for (const pool of pools) {
 			const form = this.getNextFormOfPool(pool);
+			if (!form) continue;
 			for (cell of pool) {
 				cell?.getDropletPiece()?.setForm(form);
 				cell?.getDropletPiece()?.setFormChangeInprogress(null);
@@ -326,7 +327,7 @@ export default class Game {
 	}
 
 	getNextFormOfPool(pool) {
-		const originalForm = pool[0]?.getDropletPiece()?.getFrom();
+		const originalForm = pool[0]?.getDropletPiece()?.getForm();
 		if (!originalForm) return;
 		let nextForm = null;
 
