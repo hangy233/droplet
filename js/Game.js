@@ -64,6 +64,7 @@ export default class Game {
 				this.importButton.removeAttribute('disabled');
 				this.exportButton.removeAttribute('disabled');
 				this.targetDropletsInput.removeAttribute('disabled');
+				this.brushesContainer.classList.remove('disabled');
 				this.gameDesc.textContent = "Editing."
 				return;
 			case Game.Mode.PLAY:
@@ -72,6 +73,7 @@ export default class Game {
 				this.importButton.setAttribute('disabled', '');
 				this.exportButton.setAttribute('disabled', '');
 				this.targetDropletsInput.setAttribute('disabled', '');
+				this.brushesContainer.classList.add('disabled');
 				this.gameEnd = false;
 				this.returnedDroplets = 0;
 				this.collectedDisplay.textContent = '0';
