@@ -90,7 +90,7 @@ export default class Game {
 			alert("import failed");
 		}
 
-		this.init(boardObj.size, boardObj.rows, boardObj.cols, boardObj.cells);
+		this.init(boardObj.size, boardObj.rows, boardObj.cols, boardObj.cells, boardObj.targetDroplets);
 	}
 
 	init(size, rows, cols, cells, targetDroplets = 1) {
@@ -100,6 +100,7 @@ export default class Game {
 		this.cells = new Map();
 		this.mode = Game.Mode.EDIT;
 		this.targetDroplets = targetDroplets;
+		this.targetDropletsInput.value = targetDroplets;
 		this.gameEnd = false;
 		this.returnedDroplets = 0;
 		this.collectedDisplay.textContent = '0';
