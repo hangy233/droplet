@@ -21,6 +21,10 @@
 .brush.selected {
 	border: 2px solid blue;
 }
+.brush.disabled {
+	background-color: rgb(255 255 255 / 80%);
+	background-blend-mode: hue;
+}
 
 #brushes {
 	display: flex;

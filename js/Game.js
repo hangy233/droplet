@@ -166,6 +166,7 @@ export default class Game {
 		}
 
 		this.selectBrush(document.querySelectorAll('.brush')[1]);
+		document.querySelector('.brush[data-type="POLLUTION"]')?.classList.add('disabled');
 	}
 
 	createBrush(type, form, status, isMain, isSelected) {
@@ -196,6 +197,8 @@ export default class Game {
 
 	selectBrush(newBrush) {
 		if (!newBrush) return;
+		if (!newBrush.classList.contains('brush')) return;
+		if (newBrush.classList.contains('disabled')) return;
 
 		this.selectedBrush?.classList.remove('selected');		
 		this.selectedBrush = newBrush;
