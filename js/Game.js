@@ -150,6 +150,7 @@ export default class Game {
 	}
 
 	initBrushes() {
+		this.createBrush('');
 		for (const type of Object.values(Piece.Type)) {
 			if (type === Piece.Type.DROPLET) {
 				for (const form of Object.values(Droplet.Form)) {
@@ -160,9 +161,8 @@ export default class Game {
 				this.createBrush(type);
 			}
 		}
-		this.createBrush('');
 
-		this.selectBrush(document.querySelectorAll('.brush')[0]);
+		this.selectBrush(document.querySelectorAll('.brush')[1]);
 	}
 
 	createBrush(type, form, status, isMain, isSelected) {
@@ -217,7 +217,7 @@ export default class Game {
 
 	handleClickBrushes(event) {
 		if (!event.target.classList.contains('brush')) return;
-		this.selectedBrush(event.target);
+		this.selectBrush(event.target);
 	}
 
 	handleClickBoard(event) {

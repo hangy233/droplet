@@ -13,18 +13,19 @@
 }
 
 .brush {
-	height: 100px;
-	width: 100px;
+	height: 30px;
+    width: 30px;
+    background-size: contain;
 }
 
 .brush.selected {
 	border: 2px solid blue;
 }
 
-.brushes {
+#brushes {
 	display: flex;
 }
 
-.brushes.disabled {
+#brushes.disabled {
 	display: none;
 }
