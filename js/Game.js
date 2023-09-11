@@ -30,6 +30,7 @@ export default class Game {
 		this.mode = Game.Mode.EDIT;
 		this.keyDown = false;
 		this.initEmptyBoard();
+		this.initBrushes();
 		this.editButton.addEventListener('click', () => this.changeMode(Game.Mode.EDIT));
 		this.playButton.addEventListener('click', () => this.changeMode(Game.Mode.PLAY));
 		this.exportButton.addEventListener('click', () => this.exportBoard());
