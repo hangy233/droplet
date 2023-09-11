@@ -18,7 +18,7 @@ export default class Game {
 		this.fileElem = document.getElementById('fileElem');
 		this.targetDropletsInput = document.getElementById('target');
 		this.collectedDisplay = document.getElementById('collected');
-		this.brushesContainer = document.getElementById('burshes');
+		this.brushesContainer = document.getElementById('brushes');
 		this.gameEnd = false;
 		this.targetDroplets = this.targetDropletsInput.value;
 		this.returnedDroplets = 0;
@@ -159,6 +159,7 @@ export default class Game {
 				this.createBrush(type);
 			}
 		}
+		this.createBrush('');
 
 		this.selectBrush(document.querySelectorAll('.brush')[0]);
 	}
@@ -235,7 +236,9 @@ export default class Game {
 		const piece = this.createPieceFromSelectedBrush();
 
 		cell.clearPieces();
-		cell.addPiece(piece);
+		if (piece) {
+			cell.addPiece(piece);
+		}
 	}
 
 	exportBoard() {
