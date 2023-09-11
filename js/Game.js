@@ -153,8 +153,8 @@ export default class Game {
 		for (const type of Object.values(Piece.Type)) {
 			if (type === Piece.Type.DROPLET) {
 				for (const form of Object.values(Droplet.Form)) {
-					this.createBrush(type, form, Droplet.status.NORMAL, true);
-					this.createBrush(type, form, Droplet.status.NORMAL, false);
+					this.createBrush(type, form, Droplet.Status.NORMAL, true);
+					this.createBrush(type, form, Droplet.Status.NORMAL, false);
 				}
 			} else {
 				this.createBrush(type);
