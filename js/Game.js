@@ -206,7 +206,7 @@ export default class Game {
 		this.selectedBrush.classList.add('selected');
 
 		const piece = this.createPieceFromSelectedBrush();
-		this.brushDesc.textContent = piece ? piece.getDescription() : '';
+		this.brushDesc.textContent = piece ? piece.getDescription() : 'Empty piece.';
 	}
 
 	createPieceFromSelectedBrush() {
