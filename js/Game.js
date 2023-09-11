@@ -482,7 +482,7 @@ export default class Game {
 		const target = this.findRelativeCell(cellToBePushed, vector);
 		if (!target) return false;
 		if (target.getPieces().length === 0) return true;
-		return piecesToBePushed.every((piece) => target.isTouchable(piece));
+		return piecesToBePushed.length && piecesToBePushed.every((piece) => target.isTouchable(piece));
 	}
 
 	findCellsToMove(vector) {
