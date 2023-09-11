@@ -17,9 +17,12 @@ export default class Game {
 		this.importButton = document.getElementById('import');
 		this.fileElem = document.getElementById('fileElem');
 		this.targetDropletsInput = document.getElementById('target');
+		this.collectedDisplay = document.getElementById('collected');
+		this.brushesContainer = document.getElementById('burshes');
 		this.gameEnd = false;
 		this.targetDroplets = this.targetDropletsInput.value;
 		this.returnedDroplets = 0;
+		this.selectedBrush = null;
 		this.boardSize = boardSize;
 		this.boardRows = boardRows;
 		this.boardCols = boardCols;
@@ -45,6 +48,7 @@ export default class Game {
 		this.fileElem.addEventListener("change", () => this.handleFiles(), false);
 		this.container.addEventListener('click', (e) => this.handleClickBoard(e));
 		this.targetDropletsInput.addEventListener('change', (e) => this.targetDroplets = this.targetDropletsInput.value);
+		this.brushesContainer.addEventListener('click', (e) => this.handleClickBrushes(e));
 		window.addEventListener('keydown', (e) => this.handleKeyDown(e));
 		window.addEventListener('keyup', (e) => this.handleKeyUp(e));
 	}
@@ -69,6 +73,7 @@ export default class Game {
 				this.targetDropletsInput.setAttribute('disabled', '');
 				this.gameEnd = false;
 				this.returnedDroplets = 0;
+				this.collectedDisplay.textContent = '0';
 				this.gameDesc.textContent = "Game start."
 				return;
 			default:
@@ -96,6 +101,7 @@ export default class Game {
 		this.targetDroplets = targetDroplets;
 		this.gameEnd = false;
 		this.returnedDroplets = 0;
+		this.collectedDisplay.textContent = '0';
 		this.container.innerHTML = '';
 		for (let i = 0; i < this.boardRows; i++) {
 			for (let j = 0; j < this.boardCols; j++) {
@@ -142,6 +148,76 @@ export default class Game {
 		}
 	}
 
+	initBrushes() {
+		for (const type of Object.values(Piece.Type)) {
+			if (type === Piece.Type.DROPLET) {
+				for (const form of Object.values(Droplet.form)) {
+					this.createBrush(type, form, Droplet.status.NORMAL, true);
+					this.createBrush(type, form, Droplet.status.NORMAL, false);
+				}
+			} else {
+				this.createBrush(type);
+			}
+		}
+
+		this.selectBrush(document.querySelectorAll('.brush')[0]);
+	}
+
+	createBrush(type, form, status, isMain, isSelected) {
+		const div = document.createElement('div');
+		div.classList.add('brush');
+		if (isSelected) {
+			div.classList.add('selected');
+		}
+		div.dataset.type = type;
+		if (type === Piece.Type.DROPLET) {
+			div.dataset.form = form;
+			div.dataset.status = status;
+			div.dataset.isMain = isMain;
+		}
+
+		const cell = new Cell(-1, -1, div);
+		const piece = PieceFactory.createPiece(type);
+		if (type === Piece.Type.DROPLET) {
+			piece.setForm(form);
+			piece.setStatus(status);
+			piece.setIsMain(isMain);
+		}
+		cell.addPiece(piece);
+
+		this.brushesContainer.append(div);
+		return div;
+	}
+
+	selectBrush(newBrush) {
+		if (!newBrush) return;
+
+		this.selectedBrush?.classList.remove('selected');		
+		this.selectedBrush = newBrush;
+		this.selectedBrush.classList.add('selected');
+	}
+
+	createPieceFromSelectedBrush() {
+		const type = this.selectedBrush.dataset.type;
+		const form = this.selectedBrush.dataset.form;
+		const status = this.selectedBrush.dataset.status;
+		const isMain = this.selectedBrush.dataset.isMain === 'true';
+
+		const piece = PieceFactory.createPiece(type);
+		if (type === Piece.Type.DROPLET) {
+			piece.setForm(form);
+			piece.setStatus(status);
+			piece.setIsMain(isMain);
+		}
+
+		return piece;
+	}
+
+	handleClickBrushes(event) {
+		if (!event.target.classList.contains('brush')) return;
+		this.selectedBrush(event.target);
+	}
+
 	handleClickBoard(event) {
 		if (!event.target.classList.contains('cell')) return;
 		const hash = event.target.id;
@@ -156,19 +232,10 @@ export default class Game {
 	}
 
 	editPiece(cell) {
-		const piece = cell.getPieces()[0];
-		const currentType = piece?.getType() ?? null;
-		if (currentType === Piece.Type.DROPLET && !piece.getIsMain()) {
-			piece.setIsMain(true);
-			cell.updateSprit();
-			return;
-		}
-		const index = Object.values(Piece.Type).indexOf(currentType);
-
-		const nextType = Piece.Type[Object.keys(Piece.Type)[index + 1]] ?? null;
+		const piece = this.createPieceFromSelectedBrush();
 
 		cell.clearPieces();
-		cell.addPiece(PieceFactory.createPiece(nextType));
+		cell.addPiece(piece);
 	}
 
 	exportBoard() {
@@ -315,6 +382,7 @@ export default class Game {
 		for (const [, cell] of this.cells) {
 			this.returnedDroplets += cell.applyTouchEffect();
 		}
+		this.collectedDisplay.textContent = this.returnedDroplets.toString();
 	}
 
 	spreadFormChange() {

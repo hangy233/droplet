@@ -12,3 +12,19 @@
 	background-size: contain;
 }
 
+.brush {
+	height: 100px;
+	width: 100px;
+}
+
+.brush.selected {
+	border: 2px solid blue;
+}
+
+.brushes {
+	display: flex;
+}
+
+.brushes.disabled {
+	display: none;
+}

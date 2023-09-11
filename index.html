@@ -9,18 +9,23 @@
 	<div id="control-panel">
 		<a id="download" style="display:none"></a>
 		<div id="game-desc">Editing.</div>
+		
+		<div>
+			<label>Target droplets:</label>
+			<input id="target" value="1" type=number placeholder="target droplets" min="1" max="20"/>
+			<label>Collected:<span id="collected">0</span></label>
+		</div>
+
 		<button id="edit" disabled>EDIT</button>
 		<button id="play">PLAY</button>
-
-		<input id="target" value="1" type=number placeholder="target droplets" min="1" max="20"/>
 		<input
 			type="file"
 			id="fileElem"
 			style="display:none" />
 		<button id="import" type="button">IMPORT</button>
-
 		<button id="export">EXPORT</button>
 	</div>
+	<div id="brushes"></div>
 	<div id="main-container"></div>
 </body>
 </html>
