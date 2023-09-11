@@ -20,4 +20,8 @@ export default class Pollution extends Piece {
 		}
 		return false;
 	}
+
+	getDescription() {
+		return 'Not supported yet.';
+	}
 }

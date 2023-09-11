@@ -20,4 +20,8 @@ export default class Sand extends Piece {
 		}
 		return false;
 	}
+
+	getDescription() {
+		return 'Sand: Absorbs water.';
+	}
 }

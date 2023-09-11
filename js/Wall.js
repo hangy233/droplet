@@ -12,4 +12,8 @@ export default class Wall extends Piece {
 	isPushable() {
 		return false;
 	}
+
+	getDescription() {
+		return 'Wall: Blocks everything.';
+	}
 }

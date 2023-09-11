@@ -33,3 +33,8 @@
 #brushes.disabled {
 	display: none;
 }
+
+#game-desc {
+	font-size: 22px;
+	font-weight: bold;
+}

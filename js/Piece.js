@@ -34,4 +34,8 @@ export default class Piece {
 	applyTouchEffect() {
 		return false;
 	}
+
+	getDescription() {
+		return '';
+	}
 }

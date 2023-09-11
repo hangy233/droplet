@@ -20,4 +20,8 @@ export default class Cold extends Piece {
 		}
 		return false;
 	}
+
+	getDescription() {
+		return 'Freezer:Turns water into ice when stepped on.';
+	}
 }

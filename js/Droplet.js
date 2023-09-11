@@ -62,4 +62,8 @@ export default class Droplet extends Piece {
 	getSpritName() {
 		return `DROPLET${this.isMain ? '_MAIN' : ''}_${this.form}_${this.status}`;
 	}
+
+	getDescription() {
+		return `Droplet(${this.form})${this.isMain ? ': This is the core droplet that drives other connected droplets.' : ''}`;
+	}
 }

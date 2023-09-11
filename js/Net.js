@@ -13,4 +13,8 @@ export default class Net extends Piece {
 	isPushable(piece) {
 		return piece.getType() === Piece.Type.DROPLET && piece.getForm() === Droplet.Form.ICE;
 	}
+
+	getDescription() {
+		return 'Net: blocks ice, but not water.';
+	}
 }

@@ -20,4 +20,8 @@ export default class Warm extends Piece {
 		}
 		return false;
 	}
+
+	getDescription() {
+		return 'Heat source: Turns ice into water when stepped on.';
+	}
 }

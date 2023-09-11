@@ -19,6 +19,7 @@ export default class Game {
 		this.targetDropletsInput = document.getElementById('target');
 		this.collectedDisplay = document.getElementById('collected');
 		this.brushesContainer = document.getElementById('brushes');
+		this.brushDesc = document.getElementById('brush-desc');
 		this.gameEnd = false;
 		this.targetDroplets = this.targetDropletsInput.value;
 		this.returnedDroplets = 0;
@@ -203,6 +204,9 @@ export default class Game {
 		this.selectedBrush?.classList.remove('selected');		
 		this.selectedBrush = newBrush;
 		this.selectedBrush.classList.add('selected');
+
+		const piece = this.createPieceFromSelectedBrush();
+		this.brushDesc.textContent = piece ? piece.getDesscription() : '';
 	}
 
 	createPieceFromSelectedBrush() {
