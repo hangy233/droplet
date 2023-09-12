@@ -38,3 +38,7 @@
 	font-size: 22px;
 	font-weight: bold;
 }
+
+#brushes-desc.disabled {
+	display: none;
+}
