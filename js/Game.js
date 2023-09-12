@@ -94,6 +94,7 @@ export default class Game {
 		}
 
 		this.init(boardObj.size, boardObj.rows, boardObj.cols, boardObj.cells, boardObj.targetDroplets);
+		this.fileElem.value = '';
 	}
 
 	init(size, rows, cols, cells, targetDroplets = 1) {
