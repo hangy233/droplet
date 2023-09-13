@@ -44,7 +44,7 @@ export default class Cell {
 		const sorted = this.pieces.sort((a,b) => a.getLayer() - b.getLayer()).filter((p) => !!p);
 
 		if (sorted.length) {
-			this.element.style.backgroundImage = `url("${sorted.map((p) => `../droplet/static/${p.getSpritName()}.PNG`).join(',')}")`;
+			this.element.style.backgroundImage = sorted.map((p) => `url("../droplet/static/${p.getSpritName()}.PNG")`).join(',');
 		} else {
 			this.element.style.backgroundImage = '';
 		}
