@@ -20,6 +20,11 @@ export default class Game {
 		this.collectedDisplay = document.getElementById('collected');
 		this.brushesContainer = document.getElementById('brushes');
 		this.brushDesc = document.getElementById('brush-desc');
+		this.arrows = document.getElementById('arrows');
+		this.up = document.getElementById('up');
+		this.down = document.getElementById('down');
+		this.left = document.getElementById('left');
+		this.right = document.getElementById('right');
 		this.gameEnd = false;
 		this.targetDroplets = this.targetDropletsInput.value;
 		this.returnedDroplets = 0;
@@ -51,6 +56,7 @@ export default class Game {
 		this.container.addEventListener('click', (e) => this.handleClickBoard(e));
 		this.targetDropletsInput.addEventListener('change', (e) => this.targetDroplets = this.targetDropletsInput.value);
 		this.brushesContainer.addEventListener('click', (e) => this.handleClickBrushes(e));
+		this.arrows.addEventListener('click', (e) => this.handleArrowCLick(e));
 		window.addEventListener('keydown', (e) => this.handleKeyDown(e));
 		window.addEventListener('keyup', (e) => this.handleKeyUp(e));
 	}
@@ -317,11 +323,34 @@ export default class Game {
 				break;
 		}
 
-		// const cellsToMove = new Set();
-		// const mainDropletCells = this.findMainDropletCells();
-		// for (const cell of mainDropletCells) {
-		// 	this.findPool(cell, cellsToMove);
-		// }
+		const cellsToMove = this.findCellsToMove(vector);
+		this.tryMove(cellsToMove, vector);
+		this.handleTurnEnd();
+	}
+
+	handleArrowCLick(event) {
+		if (this.mode !== Game.Mode.PLAY) return;
+		if (this.keyDown) return;
+		if (this.gameEnd) return;
+
+		let vector = [0, 0];
+		switch (event.target) {
+			case this.up:
+				vector = [-1, 0];
+				break;
+			case this.down:
+				vector = [1, 0];
+				break;
+			case this.left:
+				vector = [0, -1];
+				break;
+			case this.right:
+				vector = [0, 1];
+				break;
+			default:
+				break;
+		}
+
 		const cellsToMove = this.findCellsToMove(vector);
 		this.tryMove(cellsToMove, vector);
 		this.handleTurnEnd();
