@@ -41,7 +41,7 @@ export default class Cell {
 
 
 	updateSprit() {
-		const sorted = this.pieces.sort((a,b) => a.getLayer() - b.getLayer()).filter((p) => !!p);
+		const sorted = this.pieces.sort((a,b) => b.getLayer() - a.getLayer()).filter((p) => !!p);
 
 		if (sorted.length) {
 			this.element.style.backgroundImage = sorted.map((p) => `url("../droplet/static/${p.getSpritName()}.PNG")`).join(',');
