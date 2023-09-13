@@ -17,4 +17,8 @@ export default class Net extends Piece {
 	getDescription() {
 		return 'Net: blocks ice, but not water.';
 	}
+
+	getLayer() {
+		return 20;
+	}
 }

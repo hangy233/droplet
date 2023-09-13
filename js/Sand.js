@@ -24,4 +24,8 @@ export default class Sand extends Piece {
 	getDescription() {
 		return 'Sand: Absorbs water.';
 	}
+
+	getLayer() {
+		return 100;
+	}
 }

@@ -38,4 +38,8 @@ export default class Piece {
 	getDescription() {
 		return '';
 	}
+
+	getLayer() {
+		return 0;
+	}
 }

@@ -66,4 +66,8 @@ export default class Droplet extends Piece {
 	getDescription() {
 		return `Droplet(${this.form})${this.isMain ? ': This is the core droplet that drives other connected droplets.' : ''}`;
 	}
+
+	getLayer() {
+		return 10;
+	}
 }

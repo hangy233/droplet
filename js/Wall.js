@@ -16,4 +16,8 @@ export default class Wall extends Piece {
 	getDescription() {
 		return 'Wall: Blocks everything.';
 	}
+
+	getLayer() {
+		return 100;
+	}
 }

@@ -41,8 +41,10 @@ export default class Cell {
 
 
 	updateSprit() {
-		if (this.pieces[0]) {
-			this.element.style.backgroundImage = `url("../droplet/static/${this.pieces[0].getSpritName()}.PNG")`;
+		const sorted = this.pieces.sort((a,b) => a.getWeight() - b.getWeight());
+
+		if (sorted.length) {
+			this.element.style.backgroundImage = `url("${sorted.map((p) => `../droplet/static/${this.pieces[0].getSpritName()}.PNG`).join(',')}")`;
 		} else {
 			this.element.style.backgroundImage = '';
 		}

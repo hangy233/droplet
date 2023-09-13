@@ -21,4 +21,8 @@ export default class Goal extends Piece {
 	getDescription() {
 		return 'Goal: Droplets exits hee.';
 	}
+
+	getLayer() {
+		return 100;
+	}
 }
