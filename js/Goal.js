@@ -19,7 +19,7 @@ export default class Goal extends Piece {
 	}
 
 	getDescription() {
-		return 'Goal: Move droplets here.';
+		return 'Goal: Move droplets here to win.';
 	}
 
 	getLayer() {
