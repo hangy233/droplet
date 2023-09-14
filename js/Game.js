@@ -309,15 +309,19 @@ export default class Game {
 		switch (event.key) {
 			case 'ArrowUp':
 				vector = [-1, 0];
+				this.up.classList.add('pressed');
 				break;
 			case 'ArrowDown':
 				vector = [1, 0];
+				this.down.classList.add('pressed');
 				break;
 			case 'ArrowLeft':
 				vector = [0, -1];
+				this.left.classList.add('pressed');
 				break;
 			case 'ArrowRight':
 				vector = [0, 1];
+				this.right.classList.add('pressed');
 				break;
 			default:
 				break;
@@ -358,6 +362,10 @@ export default class Game {
 
 	handleKeyUp() {
 		this.keyDown = false;
+		this.up.classList.remove('pressed');
+		this.left.classList.remove('pressed');
+		this.right.classList.remove('pressed');
+		this.down.classList.remove('pressed');
 	}
 
 	tryMove(cells, vector) {
