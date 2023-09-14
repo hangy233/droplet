@@ -543,6 +543,7 @@ export default class Game {
 					if (targetCell.isTouchable(cell.getDropletPiece())) return true;
 
 					const piecesToBePushed = targetCell.getPushablePieces(cell.getDropletPiece());
+					if (pieceToBePushed.length === 0) return false;
 					return this.canBePushedTo(targetCell, piecesToBePushed, vector);
 				});
 			}
