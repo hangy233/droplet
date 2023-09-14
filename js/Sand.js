@@ -10,7 +10,7 @@ export default class Sand extends Piece {
 		return piece.getType() === Piece.Type.DROPLET && piece.getForm() === Droplet.Form.WATER;
 	}
 
-	isTouchable(piece) {
+	isPushable(piece) {
 		return piece.getType() === Piece.Type.DROPLET && piece.getForm() === Droplet.Form.ICE;
 	}
 
