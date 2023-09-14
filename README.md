@@ -1,5 +1,7 @@
 # Manual
 
+Play [here](https://hangy233.github.io/droplet/)
+
 ### Edit mode
 <details>
 <summary>
