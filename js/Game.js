@@ -405,8 +405,8 @@ export default class Game {
 		const targetCell = this.findRelativeCell(cellToMove, vector);
 		if (!targetCell) return;
 		if (targetCell.getPieces().length === 0) {
-			cellToMove.removePieces(pieces);
-			targetCell.addPieces(pieces);
+			cellToMove.removePieces(pieceGroup.flat());
+			targetCell.addPieces(pieceGroup.flat());
 			return;
 		}
 
