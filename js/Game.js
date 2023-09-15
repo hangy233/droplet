@@ -425,7 +425,8 @@ export default class Game {
 	handleTurnEnd() {
 		// step on conflict form changes does nothing.
 		this.applyTouchEffect();
-		this.spreadFormChange();
+		this.spreadFormChangeOfTouch();
+		this.spreadFormChangeOfAdjacant();
 		for (const [, cell] of this.cells) {
 			cell.updateSprit();
 		}
@@ -439,10 +440,37 @@ export default class Game {
 		this.collectedDisplay.textContent = this.returnedDroplets.toString();
 	}
 
-	spreadFormChange() {
+	spreadFormChangeOfAdjacant() {
 		const pools = this.findPools();
 		for (const pool of pools) {
-			const form = this.getNextFormOfPool(pool);
+			const form = this.getNextFormOfAdjacant(pool);
+			if (!form) continue;
+			for (const cell of pool) {
+				cell?.getDropletPiece()?.setForm(form);
+			}
+		}
+	}
+
+	getNextFormOfAdjacant(pool) {
+		let nextForm = null;
+
+		for (const cell of pool) {
+			if (cell?.getDropletPiece()?.getIsMain()) {
+				if (nextForm === null) {
+					nextForm = cell?.getDropletPiece()?.getForm();
+				} else if (nextForm !== cell?.getDropletPiece()?.getForm()) {
+					return null;
+				}
+			}
+		}
+
+		return nextForm;
+	}
+
+	spreadFormChangeOfTouch() {
+		const pools = this.findPools();
+		for (const pool of pools) {
+			const form = this.getNextFormOfTouch(pool);
 			if (!form) continue;
 			for (const cell of pool) {
 				cell?.getDropletPiece()?.setForm(form);
@@ -451,15 +479,13 @@ export default class Game {
 		}
 	}
 
-	getNextFormOfPool(pool) {
-		const originalForm = pool[0]?.getDropletPiece()?.getForm();
-		if (!originalForm) return;
+	getNextFormOfTouch(pool) {
 		let nextForm = null;
 
 		for (const cell of pool) {
 			if (cell?.getDropletPiece()?.getFormChangeInprogress()) {
 				if (nextForm && nextForm !== cell?.getDropletPiece()?.getFormChangeInprogress()) {
-					return originalForm;
+					return null;
 				}
 				nextForm = cell?.getDropletPiece()?.getFormChangeInprogress();
 			}
