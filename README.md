@@ -99,10 +99,4 @@ Use the "Import" tool to import the level.
 
 ### Provide feedback
 
-<details>
-<summary>
-Use this <a href="https://github.com/hangy233/droplet/issues/new" target="_blank" >link</a> to file a feedback. Make sure to select the feedback tag.
-</summary>
-
-<img src="https://i.imgur.com/XwCpBkm.png" />
-</details>
+File a feedback <a href="https://github.com/hangy233/droplet/issues/new" target="_blank" >here</a>.
