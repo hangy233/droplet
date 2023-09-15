@@ -77,12 +77,11 @@ export default class Cell {
 
 	getMovingPieces() {
 		const droplet = this.getDropletPiece();
-		// const otherPiece = this.pieces.find((p) => p !== droplet);
 		if (droplet.getForm() === Droplet.Form.ICE) {
-			return [droplet, this.pieces.find((p) => p?.getType() === Piece.Type.NET)].filter((p) => !!p);
+			return [[droplet, this.pieces.find((p) => p?.getType() === Piece.Type.NET)]].filter((p) => !!p);
 		}
 
-		return [droplet];
+		return [[droplet]];
 	}
 
 	getPosition() {

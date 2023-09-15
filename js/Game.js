@@ -398,10 +398,10 @@ export default class Game {
 
 		if (!this.canBePushedTo(cellToBePushed, [...piecesToBePushed], vector)) return;
 
-		this.maybeMove(cellToBePushed, [...piecesToBePushed], vector);
+		this.maybeMove(cellToBePushed, [[...piecesToBePushed]], vector);
 	}
 
-	maybeMove(cellToMove, pieces, vector) {
+	maybeMove(cellToMove, pieceGroup, vector) {
 		const targetCell = this.findRelativeCell(cellToMove, vector);
 		if (!targetCell) return;
 		if (targetCell.getPieces().length === 0) {
@@ -410,11 +410,10 @@ export default class Game {
 			return;
 		}
 
-		// Move any pieces that can be moved. May not work for ice+net case if anything is touchable by one but not the other.
 		const piecesToBeMoved = [];
-		for (const p of pieces) {
-			if (targetCell.isTouchable(p)) {
-				piecesToBeMoved.push(p);
+		for (const pieces of pieceGroup) {
+			if (pieces.every((p) => targetCell.isTouchable(p))) {
+				piecesToBeMoved.push(...pieces);
 			}
 		}
 
